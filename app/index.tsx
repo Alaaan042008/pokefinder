@@ -1,15 +1,90 @@
-import { Text, View } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { useState } from "react";
 
-export default function Index() {
+export default function Login() {
+  const router = useRouter();
+  const [nombre, setNombre] = useState("");
+
+  const entrar = () => {
+    if (!nombre.trim()) return;
+
+    router.push({
+      pathname: "/home",
+      params: { usuario: nombre },
+    });
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.title}>POKEFINDER</Text>
+        <Text style={styles.subtitle}>Encuentra. Captura. Colecciona.</Text>
+
+        <TextInput
+          placeholder="Ingresa tu nombre"
+          placeholderTextColor="#aaa"
+          value={nombre}
+          onChangeText={setNombre}
+          style={styles.input}
+        />
+
+        <TouchableOpacity style={styles.button} onPress={entrar}>
+          <Text style={styles.buttonText}>INICIAR AVENTURA</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#000000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  card: {
+    backgroundColor: "#111111",
+    width: "88%",
+    padding: 30,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#facc15",
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#facc15",
+    letterSpacing: 2,
+  },
+  subtitle: {
+    textAlign: "center",
+    color: "#ffffff",
+    marginBottom: 25,
+    marginTop: 5,
+    fontSize: 14,
+  },
+  input: {
+    backgroundColor: "#1f1f1f",
+    color: "white",
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#facc15",
+  },
+  button: {
+    backgroundColor: "#dc2626",
+    padding: 14,
+    borderRadius: 12,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "white",
+    textAlign: "center",
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
+});
