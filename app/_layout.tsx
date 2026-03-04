@@ -1,11 +1,13 @@
 import { Stack } from "expo-router";
+import { AuthProvider } from "../contexts/AuthContext";
+import { UserProvider } from "../contexts/UserContext";
 
 export default function Layout() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false, // 🔥 Quita la barra superior
-      }}
-    />
+    <AuthProvider>
+      <UserProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </UserProvider>
+    </AuthProvider>
   );
 }
