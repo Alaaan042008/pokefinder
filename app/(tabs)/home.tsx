@@ -12,11 +12,22 @@ export default function Home() {
         <Text style={styles.title}>Hola {user?.name}</Text>
         <Text style={styles.subtitle}>Bienvenido a PokeFinder</Text>
 
-        <Boton texto="Abrir Sobre" onPress={() => router.push("/packs/open-pack")} />
-        <Boton texto="Cartas Obtenidas" onPress={() => router.push("./(tabs)/collection")} />
-        <Boton texto="Scanner QR" onPress={() => router.push("/trade/scan")} />
-        <Boton texto="Mercado" onPress={() => router.push("./(tabs)/market")} />
-        <Boton texto="Cartas Cercanas" onPress={() => router.push("/nearby/nearby-cards")} />
+        <Boton
+          texto="Buscar Pokémon en el mapa"
+          onPress={() => router.push("/nearby/nearby-cards")}
+        />
+        <Boton
+          texto="Ver mi colección"
+          onPress={() => router.push("/(tabs)/collection")}
+        />
+        <Boton
+          texto="Obtener cartas (sobres y mercado)"
+          onPress={() => router.push("/cards/get-cards")}
+        />
+        <Boton
+          texto="Intercambiar cartas por QR"
+          onPress={() => router.push("/trade/scan")}
+        />
       </ScrollView>
     </View>
   );
@@ -35,6 +46,14 @@ const styles = StyleSheet.create({
   content: { padding: 25, alignItems: "center" },
   title: { fontSize: 26, fontWeight: "bold", color: "#facc15", marginTop: 40 },
   subtitle: { color: "#fff", marginBottom: 30 },
-  optionButton: { backgroundColor: "#111", borderWidth: 2, borderColor: "#facc15", padding: 15, borderRadius: 15, width: "100%", marginBottom: 15 },
+  optionButton: {
+    backgroundColor: "#111",
+    borderWidth: 2,
+    borderColor: "#facc15",
+    padding: 15,
+    borderRadius: 15,
+    width: "100%",
+    marginBottom: 15,
+  },
   optionText: { color: "#fff", textAlign: "center", fontWeight: "bold" },
 });

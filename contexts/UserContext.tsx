@@ -9,8 +9,12 @@ export const UserProvider = ({ children }: any) => {
     setCards((prev) => [...prev, card]);
   };
 
+  const addCards = (newCards: any[]) => {
+    setCards((prev) => [...prev, ...newCards]);
+  };
+
   return (
-    <UserContext.Provider value={{ cards, addCard }}>
+    <UserContext.Provider value={{ cards, addCard, addCards }}>
       {children}
     </UserContext.Provider>
   );

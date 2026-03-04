@@ -1,9 +1,11 @@
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { getMarket, buyCard } from "../../services/marketService";
+import { useUser } from "../../contexts/UserContext";
 
 export default function Market() {
   const [items, setItems] = useState<any[]>([]);
+  const { addCard } = useUser();
 
   useEffect(() => {
     load();
@@ -16,6 +18,7 @@ export default function Market() {
 
   const comprar = async (item: any) => {
     await buyCard(item);
+    addCard(item);
     load();
   };
 
@@ -23,7 +26,7 @@ export default function Market() {
     <View style={styles.container}>
       <FlatList
         data={items}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.card} onPress={() => comprar(item)}>
             <Text style={styles.text}>{item.name} - 💰 {item.price}</Text>

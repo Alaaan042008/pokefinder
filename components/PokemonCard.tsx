@@ -1,9 +1,11 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 
 export default function PokemonCard({ pokemon }: any) {
+    const image = pokemon?.sprites?.front_default ?? pokemon?.image;
+
   return (
     <View style={styles.card}>
-      <Image source={{ uri: pokemon.sprites.front_default }} style={styles.image} />
+      {image ? <Image source={{ uri: image }} style={styles.image} /> : null}
       <Text style={styles.name}>{pokemon.name.toUpperCase()}</Text>
     </View>
   );

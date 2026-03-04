@@ -2,13 +2,16 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native
 import { useState } from "react";
 import { openPack } from "../../services/packService";
 import PokemonCard from "../../components/PokemonCard";
+import { useUser } from "../../contexts/UserContext";
 
 export default function OpenPack() {
   const [cards, setCards] = useState<any[]>([]);
+  const { addCards } = useUser();
 
   const abrir = async () => {
     const nuevas = await openPack();
     setCards(nuevas);
+    addCards(nuevas);
   };
 
   return (
