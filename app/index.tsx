@@ -10,7 +10,7 @@ export default function Login() {
     if (!nombre.trim()) return;
 
     router.push({
-      pathname: "/home",
+      pathname: "./(tabs)/home",
       params: { usuario: nombre },
     });
   };
