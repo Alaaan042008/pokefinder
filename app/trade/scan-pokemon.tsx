@@ -22,13 +22,16 @@ export default function ScanPokemon() {
     );
   }
 
-  const handleScan = (event: any) => {
+  const handleScan = ({ data }: { data: string }) => {
     if (scanned) return;
-
+  
     setScanned(true);
-
-    const id = event.data;
-
+  
+    console.log("QR detectado:", data);
+  
+    // data viene como "pokemon:6"
+    const id = data.split(":")[1];
+  
     router.push({
       pathname: "/trade/pokemon-received",
       params: { id }
@@ -38,12 +41,25 @@ export default function ScanPokemon() {
   return (
     <View style={styles.container}>
       <CameraView
-        style={StyleSheet.absoluteFillObject}
-        barcodeScannerSettings={{
-          barcodeTypes: ["qr"]
-        }}
-        onBarcodeScanned={handleScan}
-      />
+  style={{ flex: 1 }}
+  barcodeScannerSettings={{
+    barcodeTypes: ["qr"]
+  }}
+  onBarcodeScanned={({ data }) => {
+    if (scanned) return;
+
+    setScanned(true);
+
+    console.log("QR detectado:", data);
+
+    const pokemonId = data.split(":")[1];
+
+router.push({
+  pathname: "/trade/pokemon-received",
+  params: { id: pokemonId }
+});
+  }}
+/>
 
       {scanned && (
         <Text style={styles.text} onPress={() => setScanned(false)}>

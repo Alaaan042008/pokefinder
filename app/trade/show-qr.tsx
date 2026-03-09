@@ -1,38 +1,56 @@
 import { View, Text, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import QRCode from "react-native-qrcode-svg";
+import { useUser } from "../../contexts/UserContext";
+import { useEffect } from "react";
 
-export default function ShowQR(){
+export default function ShowQR() {
 
-const { pokemonId } = useLocalSearchParams();
+  const params = useLocalSearchParams();
+  const { removeCard } = useUser();
 
-return(
+  const pokemonId =
+    typeof params.pokemonId === "string" ? params.pokemonId : undefined;
 
-<View style={styles.container}>
+  useEffect(() => {
+    if (pokemonId) {
+      removeCard(pokemonId);
+    }
+  }, [pokemonId]);
 
-<Text style={styles.text}>
-Escanea este QR para recibir el Pokémon
-</Text>
+  if (!pokemonId) {
+    return (
+      <View style={styles.container}>
+        <Text>No se encontró el Pokémon</Text>
+      </View>
+    );
+  }
 
-<QRCode
-value={`pokemon:${pokemonId}`}
-size={250}
-/>
+  return (
+    <View style={styles.container}>
 
-</View>
+      <Text style={styles.text}>
+        Escanea este QR para recibir el Pokémon
+      </Text>
 
-)
+      <QRCode
+        value={`pokemon:${pokemonId}`}
+        size={250}
+      />
+
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-container:{
-flex:1,
-backgroundColor:"#000",
-justifyContent:"center",
-alignItems:"center"
-},
-text:{
-color:"#fff",
-marginBottom:20
-}
+  container:{
+    flex:1,
+    backgroundColor:"#FFFFFF",
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  text:{
+    color:"#000",
+    marginBottom:20
+  }
 });

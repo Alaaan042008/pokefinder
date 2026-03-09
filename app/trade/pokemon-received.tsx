@@ -10,15 +10,37 @@ export default function PokemonReceived() {
   const [pokemon, setPokemon] = useState<any>(null);
 
   useEffect(() => {
+
     const getPokemon = async () => {
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      const data = await res.json();
-
-      setPokemon(data);
-      addCard(data);
+  
+      try {
+  
+        console.log("Pokemon ID recibido:", id);
+  
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  
+        if (!res.ok) {
+          throw new Error("No se pudo obtener el Pokémon");
+        }
+  
+        const data = await res.json();
+  
+        setPokemon(data);
+  
+        addCard({
+          id: data.id,
+          name: data.name,
+          image: data.sprites.front_default
+        });
+  
+      } catch (error) {
+        console.log("Error obteniendo Pokémon:", error);
+      }
+  
     };
-
+  
     getPokemon();
+  
   }, []);
 
   if (!pokemon) {
@@ -28,7 +50,8 @@ export default function PokemonReceived() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        🎉 ¡Felicidades! Has conseguido a {pokemon.name}
+      ¡Felicidades! 
+      Has conseguido a {pokemon.name}
       </Text>
 
       <Image
