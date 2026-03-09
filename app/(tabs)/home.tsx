@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -9,6 +9,10 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
+        <Image
+          source={require("@/assets/images/pokelogo.png")}
+          style={styles.logo}
+        />
         <Text style={styles.title}>Hola {user?.name}</Text>
         <Text style={styles.subtitle}>Bienvenido a PokeFinder</Text>
 
@@ -25,9 +29,14 @@ export default function Home() {
           onPress={() => router.push("/cards/get-cards")}
         />
         <Boton
-          texto="Intercambiar cartas por QR"
-          onPress={() => router.push("/trade/scan")}
-        />
+  texto="Enviar Pokémon (generar QR)"
+  onPress={() => router.push("/trade/select-pokemon")}
+/>
+
+<Boton
+  texto="Recibir Pokémon (escanear QR)"
+  onPress={() => router.push("/trade/scan-pokemon")}
+/>
       </ScrollView>
     </View>
   );
@@ -42,7 +51,7 @@ function Boton({ texto, onPress }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000" },
+  container: { flex: 1, backgroundColor: "#1F1F1B" },
   content: { padding: 25, alignItems: "center" },
   title: { fontSize: 26, fontWeight: "bold", color: "#facc15", marginTop: 40 },
   subtitle: { color: "#fff", marginBottom: 30 },
@@ -56,4 +65,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   optionText: { color: "#fff", textAlign: "center", fontWeight: "bold" },
+  logo: {
+    width: 200,
+    height: 220,
+    resizeMode: "contain",
+    alignSelf: "center",
+    marginBottom: 10,
+  },
 });

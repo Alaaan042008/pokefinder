@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet,Image } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function GetCards() {
@@ -6,6 +6,10 @@ export default function GetCards() {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("@/assets/images/pokelogo.png")}
+        style={styles.logo}
+      />
       <Text style={styles.title}>Obtener Cartas</Text>
       <Text style={styles.subtitle}>Elige cómo quieres conseguir nuevos Pokémon</Text>
 
@@ -23,7 +27,7 @@ export default function GetCards() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#1F1F1B",
     padding: 20,
     justifyContent: "center",
   },
@@ -51,5 +55,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontWeight: "bold",
+  },
+  logo: {
+    width: 200,
+    height: 220,
+    resizeMode: "contain",
+    alignSelf: "center",
+    marginBottom: 10,
   },
 });

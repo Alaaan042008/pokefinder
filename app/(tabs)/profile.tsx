@@ -13,6 +13,6 @@ export default function Profile() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000", padding: 20 },
+  container: { flex: 1, backgroundColor: "#1F1F1B", padding: 20 },
   text: { color: "#fff", marginBottom: 10 },
 });

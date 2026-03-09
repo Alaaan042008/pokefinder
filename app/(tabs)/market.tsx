@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useEffect, useState } from "react";
 import { getMarket, buyCard } from "../../services/marketService";
 import { useUser } from "../../contexts/UserContext";
@@ -24,6 +24,10 @@ export default function Market() {
 
   return (
     <View style={styles.container}>
+      <Image
+              source={require("@/assets/images/pokelogo.png")}
+              style={styles.logo}
+            />
       <FlatList
         data={items}
         keyExtractor={(item) => item.id.toString()}
@@ -38,7 +42,14 @@ export default function Market() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000", padding: 20 },
+  container: { flex: 1, backgroundColor: "#1F1F1B", padding: 20 },
   card: { backgroundColor: "#111", padding: 15, borderRadius: 10, borderColor: "#facc15", borderWidth: 1, marginBottom: 10 },
   text: { color: "#fff" },
+  logo: {
+    width: 200,
+    height: 220,
+    resizeMode: "contain",
+    alignSelf: "center",
+    marginBottom: 10,
+  },
 });

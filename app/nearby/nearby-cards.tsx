@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from "react-native";
 import * as Location from "expo-location";
 import { getRandomPokemon } from "../../services/pokeapi";
 import { useUser } from "../../contexts/UserContext";
@@ -83,6 +83,10 @@ export default function NearbyCards() {
 
   return (
     <View style={styles.container}>
+      <Image
+                source={require("@/assets/images/pokelogo.png")}
+                style={styles.logo}
+              />
       <Text style={styles.helper}>{helperText}</Text>
       <Text style={styles.location}>{locationText}</Text>
 
@@ -123,7 +127,7 @@ export default function NearbyCards() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#000", padding: 12 },
+    container: { flex: 1, backgroundColor: "#1F1F1B", padding: 12 },
     helper: { color: "#fff", marginBottom: 8, textAlign: "center" },
     location: { color: "#facc15", marginBottom: 8, textAlign: "center" },
     mapArea: {
@@ -154,4 +158,11 @@ const styles = StyleSheet.create({
       paddingVertical: 12,
     },
     spawnButtonText: { color: "#fff", fontWeight: "bold", textAlign: "center" },
+    logo: {
+      width: 200,
+      height: 220,
+      resizeMode: "contain",
+      alignSelf: "center",
+      marginBottom: 10,
+    },
   });

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from "react-native";
 import { useState } from "react";
 import { openPack } from "../../services/packService";
 import PokemonCard from "../../components/PokemonCard";
@@ -16,6 +16,10 @@ export default function OpenPack() {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("@/assets/images/pokelogo.png")}
+        style={styles.logo}
+      />
       <TouchableOpacity style={styles.button} onPress={abrir}>
         <Text style={styles.text}>ABRIR SOBRE</Text>
       </TouchableOpacity>
@@ -30,7 +34,14 @@ export default function OpenPack() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000", padding: 20 },
+  container: { flex: 1, backgroundColor: "#1F1F1B", padding: 20 },
   button: { backgroundColor: "#dc2626", padding: 15, borderRadius: 12, marginBottom: 20 },
   text: { color: "#fff", textAlign: "center", fontWeight: "bold" },
+  logo: {
+    width: 200,
+    height: 220,
+    resizeMode: "contain",
+    alignSelf: "center",
+    marginBottom: 10,
+  },
 });
