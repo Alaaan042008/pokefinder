@@ -9,19 +9,24 @@ export const openPack = async (userCards: any[] = []) => {
   if (roll <= 0.9) {
 
     const pokemons = [];
+    const ids: number[] = [];
 
-    for (let i = 0; i < 10; i++) {
+while (pokemons.length < 10) {
 
-      const data = await getRandomPokemon();
+  const data = await getRandomPokemon();
 
-      pokemons.push({
-        id: data.id,
-        name: data.name,
-        image: data.sprites.front_default,
-        type: "pokemon"
-      });
+  if (ids.includes(data.id)) continue;
 
-    }
+  ids.push(data.id);
+
+  pokemons.push({
+    id: data.id,
+    name: data.name,
+    image: data.sprites.front_default,
+    type: "pokemon"
+  });
+
+}
 
     return pokemons;
 

@@ -5,13 +5,42 @@ const UserContext = createContext<any>(null);
 export function UserProvider({ children }: any) {
 
   const [cards, setCards] = useState<any[]>([]);
+  const [coins, setCoins] = useState(100);
+
+  const addCoins = (amount: number) => {
+    setCoins(prev => prev + amount);
+  };
+
+  const spendCoins = (amount: number) => {
+    setCoins(prev => prev - amount);
+  };
 
   const addCard = (card: any) => {
+
+    const exists = cards.find(c => c.id === card.id && c.type === card.type);
+
+    if (exists) {
+      addCoins(5);
+      return;
+    }
+
     setCards(prev => [...prev, card]);
   };
 
   const addCards = (newCards: any[]) => {
-    setCards(prev => [...prev, ...newCards]);
+
+    newCards.forEach(card => {
+
+      const exists = cards.find(c => c.id === card.id && c.type === card.type);
+
+      if (exists) {
+        addCoins(5);
+      } else {
+        setCards(prev => [...prev, card]);
+      }
+
+    });
+
   };
 
   const removeCard = (id: number | string) => {
@@ -19,7 +48,15 @@ export function UserProvider({ children }: any) {
   };
 
   return (
-    <UserContext.Provider value={{ cards, addCard, addCards, removeCard }}>
+    <UserContext.Provider value={{
+      cards,
+      coins,
+      addCard,
+      addCards,
+      removeCard,
+      addCoins,
+      spendCoins
+    }}>
       {children}
     </UserContext.Provider>
   );

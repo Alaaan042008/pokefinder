@@ -5,7 +5,7 @@ import { useUser } from "../../contexts/UserContext";
 
 export default function Market() {
   const [items, setItems] = useState<any[]>([]);
-  const { addCard } = useUser();
+  const { addCard, coins, spendCoins } = useUser();
 
   useEffect(() => {
     load();
@@ -17,9 +17,20 @@ export default function Market() {
   };
 
   const comprar = async (item: any) => {
+
+    if (coins < item.price) {
+      alert("No tienes suficientes monedas");
+      return;
+    }
+  
+    spendCoins(item.price);
+  
     await buyCard(item);
+  
     addCard(item);
+  
     load();
+  
   };
 
   return (
@@ -28,12 +39,28 @@ export default function Market() {
               source={require("@/assets/images/pokelogo.png")}
               style={styles.logo}
             />
+      <Text style={styles.coins}>💰 {coins} monedas</Text>
       <FlatList
         data={items}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.card} onPress={() => comprar(item)}>
-            <Text style={styles.text}>{item.name} - 💰 {item.price}</Text>
+            <View style={styles.marketItem}>
+
+<Image
+source={
+item.type === "pokemon"
+? { uri: item.image }
+: item.image
+}
+style={styles.image}
+/>
+
+<Text style={styles.text}>{item.name}</Text>
+
+<Text style={styles.price}>💰 {item.price}</Text>
+
+</View>
           </TouchableOpacity>
         )}
       />
@@ -52,4 +79,24 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 10,
   },
+  coins:{
+    color:"#facc15",
+    fontSize:18,
+    textAlign:"center",
+    marginBottom:20
+  },
+  marketItem:{
+    alignItems:"center"
+    },
+    
+    image:{
+    width:100,
+    height:100,
+    resizeMode:"contain",
+    marginBottom:5
+    },
+    
+    price:{
+    color:"#facc15"
+    }
 });
