@@ -6,10 +6,10 @@ import { useUser } from "../../contexts/UserContext";
 
 export default function OpenPack() {
   const [cards, setCards] = useState<any[]>([]);
-  const { addCards } = useUser();
+  const { addCards, cards: userCards } = useUser();
 
   const abrir = async () => {
-    const nuevas = await openPack();
+    const nuevas = await openPack(userCards);
     setCards(nuevas);
     addCards(nuevas);
   };

@@ -1,10 +1,72 @@
 import { getRandomPokemon } from "./pokeapi";
+import { cardsDatabase } from "../utils/cardsDatabase";
 
-export const openPack = async () => {
-  const cards = [];
-  for (let i = 0; i < 5; i++) {
-    const pokemon = await getRandomPokemon();
-    cards.push(pokemon);
+export const openPack = async (userCards: any[] = []) => {
+
+  const roll = Math.random();
+
+  // 🟢 90% → 10 Pokémon
+  if (roll <= 0.9) {
+
+    const pokemons = [];
+
+    for (let i = 0; i < 10; i++) {
+
+      const data = await getRandomPokemon();
+
+      pokemons.push({
+        id: data.id,
+        name: data.name,
+        image: data.sprites.front_default,
+        type: "pokemon"
+      });
+
+    }
+
+    return pokemons;
+
   }
-  return cards;
+
+  // 🟣 10% → carta
+  const ownedCards = userCards
+    .filter(c => c.type === "card")
+    .map(c => c.id);
+
+  const available = cardsDatabase.filter(c => !ownedCards.includes(c.id));
+
+  if (available.length === 0) {
+
+    return [
+      {
+        id: "coins",
+        name: "+100 monedas",
+        image: null,
+        type: "reward"
+      }
+    ];
+
+  }
+
+  const rarityRoll = Math.random();
+
+  let rarity = "NORMAL";
+
+  if (rarityRoll <= 0.1) rarity = "VMAX";
+  else if (rarityRoll <= 0.4) rarity = "EX";
+
+  const possible = available.filter(c => c.rarity === rarity);
+
+  const pool = possible.length ? possible : available;
+
+  const randomCard = pool[Math.floor(Math.random() * pool.length)];
+
+  return [
+    {
+      id: randomCard.id,
+      name: randomCard.id,
+      image: randomCard.image,
+      type: "card",
+      rarity: randomCard.rarity
+    }
+  ];
 };
