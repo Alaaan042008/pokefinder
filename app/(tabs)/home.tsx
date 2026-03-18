@@ -51,7 +51,7 @@ function Boton({ texto, onPress }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1F1F1B" },
+  container: { flex: 1, backgroundColor: "#0097A7" },
   content: { padding: 25, alignItems: "center" },
   title: { fontSize: 26, fontWeight: "bold", color: "#facc15", marginTop: 40 },
   subtitle: { color: "#fff", marginBottom: 30 },

@@ -1,47 +1,90 @@
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { useState } from "react";
 import { openPack } from "../../services/packService";
 import PokemonCard from "../../components/PokemonCard";
 import { useUser } from "../../contexts/UserContext";
+import PackCard from "../../components/PackCard";
+import PackOpeningAnimation from "../../components/PackOpeningAnimation";
 
 export default function OpenPack() {
-  const [cards, setCards] = useState<any[]>([]);
-  const { addCards, cards: userCards } = useUser();
 
-  const abrir = async () => {
-    const nuevas = await openPack(userCards);
-    setCards(nuevas);
+  const { addCards, cards } = useUser();
+
+  const [openedCards, setOpenedCards] = useState<any[]>([]);
+  const [opening, setOpening] = useState(false);
+
+  // tocar el sobre
+  const abrir = () => {
+    setOpenedCards([]);
+    setOpening(true);
+  };
+
+  // cuando termina la animación
+  const finishOpening = async () => {
+
+    const nuevas = await openPack(cards);
+
+    setOpenedCards(nuevas);
+
     addCards(nuevas);
+
+    setOpening(false);
+
   };
 
   return (
     <View style={styles.container}>
+
       <Image
         source={require("@/assets/images/pokelogo.png")}
         style={styles.logo}
       />
-      <TouchableOpacity style={styles.button} onPress={abrir}>
-        <Text style={styles.text}>ABRIR SOBRE</Text>
-      </TouchableOpacity>
 
-      <FlatList
-        data={cards}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <PokemonCard pokemon={item} />}
-      />
+      {!opening && openedCards.length === 0 && (
+        <PackCard onOpen={abrir} />
+      )}
+
+      {opening && (
+        <PackOpeningAnimation onFinish={finishOpening} />
+      )}
+
+      {openedCards.length > 0 && (
+        <>
+          <Text style={styles.title}>Cartas obtenidas</Text>
+
+          <FlatList
+            data={openedCards}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <PokemonCard pokemon={item} />}
+          />
+        </>
+      )}
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1F1F1B", padding: 20 },
-  button: { backgroundColor: "#dc2626", padding: 15, borderRadius: 12, marginBottom: 20 },
-  text: { color: "#fff", textAlign: "center", fontWeight: "bold" },
-  logo: {
-    width: 200,
-    height: 220,
-    resizeMode: "contain",
-    alignSelf: "center",
-    marginBottom: 10,
+
+  container:{
+    flex:1,
+    backgroundColor:"#1F1F1B",
+    padding:20
   },
+
+  logo:{
+    width:200,
+    height:220,
+    resizeMode:"contain",
+    alignSelf:"center",
+    marginBottom:10
+  },
+
+  title:{
+    color:"#fff",
+    fontSize:18,
+    fontWeight:"bold",
+    marginBottom:10
+  }
+
 });

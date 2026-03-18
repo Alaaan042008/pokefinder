@@ -41,8 +41,8 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1F1F1B", justifyContent: "center", alignItems: "center" },
-  card: { backgroundColor: "#1F1F1B", width: "88%", padding: 30, borderRadius: 20, borderWidth: 2, borderColor: "#facc15" },
+  container: { flex: 1, backgroundColor: "#0097A7", justifyContent: "center", alignItems: "center" },
+  card: { backgroundColor: "#0097A7", width: "88%", padding: 30, borderRadius: 20, borderWidth: 2, borderColor: "#facc15" },
   title: { fontSize: 30, fontWeight: "bold", textAlign: "center", color: "#facc15" },
   subtitle: { textAlign: "center", color: "#fff", marginBottom: 25 },
   input: { backgroundColor: "#1f1f1f", color: "white", borderRadius: 10, padding: 12, marginBottom: 20, borderWidth: 1, borderColor: "#facc15" },

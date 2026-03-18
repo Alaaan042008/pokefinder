@@ -21,7 +21,7 @@ export default function Collection() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1F1F1B", padding: 20 },
+  container: { flex: 1, backgroundColor: "#0097A7", padding: 20 },
   logo: {
     width: 200,
     height: 220,
