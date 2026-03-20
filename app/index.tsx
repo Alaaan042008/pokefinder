@@ -1,58 +1,70 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import ScreenBackground from "@/components/ScreenBackground";
+import { colors, startBackground } from "@/utils/theme";
 
-export default function Login() {
+export default function StartScreen() {
   const router = useRouter();
-  const [nombre, setNombre] = useState("");
-  const { login } = useAuth();
-
-  const entrar = async () => {
-    if (!nombre.trim()) return;
-    await login(nombre);
-    router.push("./(tabs)/home");
-  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-      <Image
-  source={require("../assets/images/pokelogo.png")}
-  style={styles.logo}
-/>
-        
-        <Text style={styles.subtitle}>Encuentra. Captura. Colecciona.</Text>
+    <ScreenBackground backgroundSource={startBackground} overlayOpacity={0.12}>
+      <View style={styles.container}>
+        <View style={styles.hero}>
+          <Image source={require("../assets/images/pokelogo.png")} style={styles.logo} />
+          <Text style={styles.tagline}>Tu aventura Pokémon comienza aquí.</Text>
+        </View>
 
-        <TextInput
-          placeholder="Ingresa tu nombre"
-          placeholderTextColor="#aaa"
-          value={nombre}
-          onChangeText={setNombre}
-          style={styles.input}
-        />
-
-        <TouchableOpacity style={styles.button} onPress={entrar}>
-          <Text style={styles.buttonText}>INICIAR AVENTURA</Text>
+        <TouchableOpacity style={styles.startButton} onPress={() => router.push("/login")} activeOpacity={0.9}>
+          <Text style={styles.startText}>Presiona para Iniciar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+      </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0097A7", justifyContent: "center", alignItems: "center" },
-  card: { backgroundColor: "#0097A7", width: "88%", padding: 30, borderRadius: 20, borderWidth: 2, borderColor: "#facc15" },
-  title: { fontSize: 30, fontWeight: "bold", textAlign: "center", color: "#facc15" },
-  subtitle: { textAlign: "center", color: "#fff", marginBottom: 25 },
-  input: { backgroundColor: "#1f1f1f", color: "white", borderRadius: 10, padding: 12, marginBottom: 20, borderWidth: 1, borderColor: "#facc15" },
-  button: { backgroundColor: "#dc2626", padding: 14, borderRadius: 12 },
-  buttonText: { color: "white", textAlign: "center", fontWeight: "bold" },
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 24,
+    paddingTop: 72,
+    paddingBottom: 56,
+  },
+  hero: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 20,
+  },
   logo: {
-    width: 200,
+    width: 280,
     height: 220,
     resizeMode: "contain",
-    alignSelf: "center",
-    marginBottom: 10,
+    marginBottom: 18,
+  },
+  tagline: {
+    color: colors.text,
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+    textShadowColor: "rgba(15,23,42,0.75)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
+  },
+  startButton: {
+    width: "100%",
+    borderRadius: 24,
+    backgroundColor: "rgba(255,255,255,0.18)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.4)",
+    paddingVertical: 20,
+    paddingHorizontal: 24,
+  },
+  startText: {
+    color: colors.text,
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "800",
+    letterSpacing: 0.4,
   },
 });

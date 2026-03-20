@@ -1,70 +1,55 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState } from "react";
 import { useRouter } from "expo-router";
+import ScreenBackground from "@/components/ScreenBackground";
+import { colors } from "@/utils/theme";
 
 export default function ScanPokemon() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
-
   const router = useRouter();
 
   if (!permission) {
-    return <Text>Cargando cámara...</Text>;
+    return (
+      <ScreenBackground>
+        <View style={styles.centered}>
+          <Text style={styles.infoText}>Cargando cámara...</Text>
+        </View>
+      </ScreenBackground>
+    );
   }
 
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
-        <Text>No hay permiso para usar la cámara</Text>
-        <Text onPress={requestPermission}>Dar permiso</Text>
-      </View>
+      <ScreenBackground>
+        <View style={styles.centered}>
+          <Text style={styles.infoText}>No hay permiso para usar la cámara.</Text>
+          <TouchableOpacity style={styles.actionButton} onPress={requestPermission}>
+            <Text style={styles.actionText}>Dar permiso</Text>
+          </TouchableOpacity>
+        </View>
+      </ScreenBackground>
     );
   }
-
-  const handleScan = ({ data }: { data: string }) => {
-    if (scanned) return;
-  
-    setScanned(true);
-  
-    console.log("QR detectado:", data);
-  
-    // data viene como "pokemon:6"
-    const id = data.split(":")[1];
-  
-    router.push({
-      pathname: "/trade/pokemon-received",
-      params: { id }
-    });
-  };
 
   return (
     <View style={styles.container}>
       <CameraView
   style={{ flex: 1 }}
-  barcodeScannerSettings={{
-    barcodeTypes: ["qr"]
-  }}
+  barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
   onBarcodeScanned={({ data }) => {
     if (scanned) return;
-
     setScanned(true);
-
-    console.log("QR detectado:", data);
-
     const pokemonId = data.split(":")[1];
-
-router.push({
-  pathname: "/trade/pokemon-received",
-  params: { id: pokemonId }
-});
+    router.push({ pathname: "/trade/pokemon-received", params: { id: pokemonId } });
   }}
 />
 
       {scanned && (
-        <Text style={styles.text} onPress={() => setScanned(false)}>
-          Escanear otra vez
-        </Text>
+        <TouchableOpacity style={styles.scanAgain} onPress={() => setScanned(false)}>
+        <Text style={styles.scanAgainText}>Escanear otra vez</Text>
+      </TouchableOpacity>
       )}
     </View>
   );
@@ -72,13 +57,41 @@ router.push({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
-  text: {
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+  },
+  infoText: {
+    color: colors.text,
+    marginBottom: 16,
+    textAlign: "center",
+    fontWeight: "700",
+  },
+  actionButton: {
+    backgroundColor: colors.whiteButton,
+    borderRadius: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+  },
+  actionText: {
+    color: colors.whiteButtonText,
+    fontWeight: "800",
+  },
+  scanAgain: {
     position: "absolute",
     bottom: 50,
     alignSelf: "center",
-    backgroundColor: "yellow",
-    padding: 10
-  }
+    backgroundColor: colors.whiteButton,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 16,
+  },
+  scanAgainText: {
+    color: colors.whiteButtonText,
+    fontWeight: "800",
+  },
 });

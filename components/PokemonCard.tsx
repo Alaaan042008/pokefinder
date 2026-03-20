@@ -1,4 +1,5 @@
 import { View, Text, Image, StyleSheet } from "react-native";
+import { colors, getPokemonTypes, getTypePalette } from "@/utils/theme";
 
 const cardImages: any = {
   MEGALucarioEX: require("../assets/cards/MEGALucarioEX.png"),
@@ -13,57 +14,83 @@ const cardImages: any = {
   Squirtle: require("../assets/cards/Squirtle.png"),
 };
 
-export default function PokemonCard({ pokemon }: any) {
-
+export default function PokemonCard({ pokemon, compact = false }: any) {
   const isCard = pokemon?.type === "card";
-
-  const image = isCard
-    ? cardImages[pokemon.id]
-    : pokemon?.sprites?.front_default ?? pokemon?.image;
+  const image = isCard ? cardImages[pokemon.id] : pokemon?.sprites?.front_default ?? pokemon?.image;
+  const types = getPokemonTypes(pokemon);
+  const palette = getTypePalette(pokemon);
 
   return (
-    <View style={styles.card}>
-      {image ? (
-        <Image
-          source={isCard ? image : { uri: image }}
-          style={styles.image}
-        />
-      ) : null}
+    <View style={[styles.card, compact && styles.cardCompact]}>
+      <View style={styles.typeLayerContainer}>
+        <View style={[styles.typeLayer, { backgroundColor: palette[0] }]} />
+        <View style={[styles.typeLayer, styles.rightLayer, { backgroundColor: palette[1] }]} />
+        <View style={styles.typeOverlay} />
+      </View>
 
-      <Text style={styles.name}>
-        {pokemon.name?.toUpperCase()}
-      </Text>
+      {image ? <Image source={isCard ? image : { uri: image }} style={[styles.image, compact && styles.imageCompact]} /> : null}
 
-      {pokemon.rarity && (
-        <Text style={styles.rarity}>{pokemon.rarity}</Text>
-      )}
+      <Text style={styles.name}>{pokemon.name?.toUpperCase()}</Text>
 
+      {!!types.length && <Text style={styles.types}>{types.join(" / ").toUpperCase()}</Text>}
+      {pokemon.rarity && <Text style={styles.rarity}>{pokemon.rarity}</Text>}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#111",
-    borderWidth: 2,
-    borderColor: "#facc15",
-    borderRadius: 15,
-    padding: 10,
+    borderRadius: 22,
+    padding: 12,
     marginBottom: 15,
+    minHeight: 200,
     alignItems: "center",
+    overflow: "hidden",
+    position: "relative",
+  },
+  cardCompact: {
+    minHeight: 180,
+  },
+  typeLayerContainer: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: "row",
+  },
+  typeLayer: {
+    flex: 1,
+  },
+  rightLayer: {
+    opacity: 0.95,
+  },
+  typeOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(15,23,42,0.28)",
   },
   image: {
     width: 120,
     height: 120,
     resizeMode: "contain",
+    marginTop: 8,
+  },
+  imageCompact: {
+    width: 92,
+    height: 92,
   },
   name: {
-    color: "#fff",
-    fontWeight: "bold",
-    marginTop: 5
+    color: colors.text,
+    fontWeight: "800",
+    marginTop: 8,
+    textAlign: "center",
   },
-  rarity:{
-    color:"#facc15",
-    fontSize:12
-  }
+  types: {
+    color: "rgba(255,255,255,0.9)",
+    fontSize: 11,
+    marginTop: 4,
+    textAlign: "center",
+  },
+  rarity: {
+    color: colors.success,
+    fontSize: 12,
+    fontWeight: "800",
+    marginTop: 6,
+  },
 });

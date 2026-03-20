@@ -1,64 +1,71 @@
 import { View, Text, TouchableOpacity, StyleSheet,Image } from "react-native";
 import { useRouter } from "expo-router";
+import ScreenBackground from "@/components/ScreenBackground";
+import { colors } from "@/utils/theme";
 
 export default function GetCards() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("@/assets/images/pokelogo.png")}
-        style={styles.logo}
-      />
-      <Text style={styles.title}>Obtener Cartas</Text>
-      <Text style={styles.subtitle}>Elige cómo quieres conseguir nuevos Pokémon</Text>
+    <ScreenBackground>
+      <View style={styles.container}>
+        <Image source={require("@/assets/images/pokelogo.png")} style={styles.logo} />
+        <View style={styles.heroCard}>
+          <Text style={styles.title}>Obtener Cartas</Text>
+          <Text style={styles.subtitle}>Elige cómo quieres conseguir nuevos Pokémon.</Text>
+        </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => router.push("/packs/open-pack")}>
-        <Text style={styles.buttonText}>Abrir sobres</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => router.push("/packs/open-pack")} activeOpacity={0.9}>
+          <Text style={styles.buttonText}>Abrir sobres</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => router.push("/(tabs)/market")}>
-        <Text style={styles.buttonText}>Comprar en mercado</Text>
-      </TouchableOpacity>
-    </View>
+      <TouchableOpacity style={styles.button} onPress={() => router.push("/(tabs)/market")} activeOpacity={0.9}>
+          <Text style={styles.buttonText}>Comprar en mercado</Text>
+        </TouchableOpacity>
+      </View>
+    </ScreenBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1F1F1B",
     padding: 20,
     justifyContent: "center",
   },
+  heroCard: {
+    backgroundColor: colors.card,
+    borderRadius: 24,
+    padding: 22,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
   title: {
-    color: "#facc15",
+    color: colors.text,
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: "800",
     marginBottom: 10,
     textAlign: "center",
   },
   subtitle: {
-    color: "#fff",
+    color: colors.mutedText,
     textAlign: "center",
-    marginBottom: 30,
   },
   button: {
-    backgroundColor: "#111",
-    borderWidth: 2,
-    borderColor: "#facc15",
-    padding: 16,
-    borderRadius: 14,
+    backgroundColor: colors.whiteButton,
+    padding: 18,
+    borderRadius: 18,
     marginBottom: 14,
   },
   buttonText: {
-    color: "#fff",
+    color: colors.whiteButtonText,
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: "800",
   },
   logo: {
-    width: 200,
-    height: 220,
+    width: 180,
+    height: 160,
     resizeMode: "contain",
     alignSelf: "center",
     marginBottom: 10,
